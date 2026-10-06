@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://masons-coding.github.io/dev-pocket/sitemap.xml

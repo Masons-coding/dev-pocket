@@ -1,0 +1,3 @@
+(function () { var q = U.$('#sq'), rows = U.$$('#st tbody tr'), none = U.$('#sn'), chips = U.$$('[data-cls]'), cls = '';
+  function run() { var t = q.value.trim().toLowerCase(), n = 0; rows.forEach(function (r) { var ok = (!t || r.getAttribute('data-q').indexOf(t) >= 0) && (!cls || r.getAttribute('data-c') === cls); r.hidden = !ok; if (ok) n++; }); none.hidden = n > 0; }
+  U.on(q, 'input', run); chips.forEach(function (c) { U.on(c, 'click', function () { var on = c.getAttribute('aria-pressed') === 'true'; chips.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); cls = on ? '' : c.getAttribute('data-cls'); if (!on) c.setAttribute('aria-pressed', 'true'); run(); }); }); })();
