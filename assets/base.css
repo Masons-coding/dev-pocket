@@ -149,3 +149,9 @@ details.faq p{color:var(--muted)}
 .todo label{margin:0;font-weight:500;cursor:pointer}
 .todo small{display:block}
 @media print{.site-header,.site-footer,.ad,.consent,.row .btn,.skip,.chips{display:none!important}body{background:#fff;color:#000}.panel,.card{box-shadow:none}}
+.daily{margin:1rem 0;border-left:4px solid var(--accent)}
+.daily__text{font-size:1.15rem;font-weight:600;margin:.3rem 0}
+.share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .9rem;margin:2rem 0 1rem;padding:1rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+.share .row{gap:.4rem}
+
+@media print{.noprint,.share,.daily{display:none!important}.prose{max-width:none}a{color:#000;text-decoration:none}}

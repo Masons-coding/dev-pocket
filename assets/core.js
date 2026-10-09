@@ -42,8 +42,25 @@
     var mb = U.$('#menu-btn'), nav = U.$('#nav');
     U.on(mb, 'click', function () { var open = nav.classList.toggle('open'); mb.setAttribute('aria-expanded', open ? 'true' : 'false'); });
     var y = U.$('#year'); if (y) y.textContent = new Date().getFullYear();
-    initAds();
+    initAds(); initShare(); initStats();
   });
+
+  /* privacy-friendly analytics: Cloudflare Web Analytics (no cookies, no profiles) - only when a token is configured and the visitor has not set Do Not Track */
+  function initStats() {
+    var tok = (window.SITE_CONFIG || {}).cfBeacon; if (!tok || navigator.doNotTrack === '1' || window.doNotTrack === '1') return;
+    var s = document.createElement('script'); s.defer = true; s.src = 'https://static.cloudflareinsights.com/beacon.min.js'; s.setAttribute('data-cf-beacon', JSON.stringify({ token: tok })); document.head.appendChild(s);
+  }
+  /* share bar: plain links only (no third-party scripts, no tracking). Uses the phone's native share sheet when available. */
+  function initShare() {
+    var row = U.$('#share-row'); if (!row) return;
+    var url = location.href.split('#')[0], title = document.title, e = encodeURIComponent;
+    var items = [['X', 'https://twitter.com/intent/tweet?text=' + e(title) + '&url=' + e(url)], ['Facebook', 'https://www.facebook.com/sharer/sharer.php?u=' + e(url)], ['LinkedIn', 'https://www.linkedin.com/sharing/share-offsite/?url=' + e(url)], ['Reddit', 'https://www.reddit.com/submit?url=' + e(url) + '&title=' + e(title)], ['WhatsApp', 'https://wa.me/?text=' + e(title + ' ' + url)], ['Email', 'mailto:?subject=' + e(title) + '&body=' + e(url)]];
+    var h = ''; if (navigator.share) h += '<button type="button" class="btn small" id="share-native">Share…</button>';
+    h += items.map(function (i) { return '<a class="btn small ghost" href="' + U.esc(i[1]) + '" target="_blank" rel="noopener noreferrer">' + i[0] + '</a>'; }).join('') + '<button type="button" class="btn small ghost" id="share-copy">Copy link</button>';
+    row.innerHTML = h;
+    U.on(U.$('#share-native'), 'click', function () { navigator.share({ title: title, url: url }).catch(function () { /* cancelled */ }); });
+    U.on(U.$('#share-copy'), 'click', function (ev) { U.copy(url, ev.currentTarget); });
+  }
 
   /* ads: nothing loads unless SITE_CONFIG.adsenseClient is set AND the visitor accepted */
   function initAds() {
